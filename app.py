@@ -7,7 +7,7 @@ app = Flask(__name__)
 fake = Faker('pt_BR')
 
 alunos = []
-proximo_id = 1
+proximo_id_aluno = 1
 
 CURSOS = [
     "Ciência da Computação",
@@ -25,10 +25,10 @@ CURSOS = [
 
 def gerar_alunos(qtd=20):
     """Gera alunos fictícios usando Faker"""
-    global proximo_id
+    global proximo_id_aluno
     for _ in range(qtd):
         aluno = {
-            "id": proximo_id,
+            "id": proximo_id_aluno,
             "nome": fake.name(),
             "email": fake.email(),
             "matricula": f"{datetime.now().year}{random.randint(1000, 9999)}",
@@ -40,7 +40,7 @@ def gerar_alunos(qtd=20):
             "ativo": random.choice([True, True, True, False]),
         }
         alunos.append(aluno)
-        proximo_id += 1
+        proximo_id_aluno += 1
 
 
 gerar_alunos()
@@ -68,9 +68,9 @@ def criar_aluno():
     if not dados.get("nome") or not dados.get("curso"):
         return jsonify({"erro": "Campos obrigatorios: nome, curso"}), 400
 
-    global proximo_id
+    global proximo_id_aluno
     aluno = {
-        "id": proximo_id,
+        "id": proximo_id_aluno,
         "nome": dados["nome"],
         "email": dados.get("email", ""),
         "matricula": f"{datetime.now().year}{random.randint(1000, 9999)}",
@@ -80,7 +80,7 @@ def criar_aluno():
         "ativo": dados.get("ativo", True),
     }
     alunos.append(aluno)
-    proximo_id += 1
+    proximo_id_aluno += 1
     return jsonify(aluno), 201
 
 
